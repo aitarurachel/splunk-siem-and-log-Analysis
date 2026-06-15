@@ -30,40 +30,8 @@ This lab teaches that core skill set: getting data in, searching it effectively,
 
 ## Architecture Overview
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│  Microsoft Azure — Free Account                                 │
-│                                                                 │
-│  ┌─────────────────────────────────────────────────────────┐    │
-│  │  Azure Virtual Network — 10.0.0.0/16                    │    │
-│  │                                                         │    │
-│  │  ┌─────────────────────┐       ┌─────────────────────┐  │    │
-│  │  │  DC01 — Windows     │       │  Splunk Enterprise  │  │    │
-│  │  │  Server VM (Lab 1)  │──────▶│  Ubuntu 22.04 LTS   │  │    │
-│  │  │                     │ :9997 │  Standard_B2s       │  │    │
-│  │  │  Universal Forwarder│  TLS  │                     │  │    │
-│  │  │  inputs.conf        │       │  Index: windows_logs│  │    │
-│  │  │  EventLog: Security │       │  Web UI: port 8000  │  │    │
-│  │  │  EventLog: System   │       │  SPL · Dashboards   │  │    │
-│  │  │  EventLog: Applic.  │       │  Alerts             │  │    │
-│  │  └─────────────────────┘       └──────────┬──────────┘  │    │
-│  │                                           │ HTTPS       │    │
-│  │  ┌────────────────────────────────────────┼──────────┐  │    │
-│  │  │  NSG Rules                             │          │  │    │
-│  │  │  Port 22  → your IP only               │          │  │    │
-│  │  │  Port 8000→ your IP only               │          │  │    │
-│  │  │  Port 9997→ VNet only (10.0.0.0/16)    │          │  │    │
-│  │  └────────────────────────────────────────┼──────────┘  │    │
-│  └───────────────────────────────────────────┼──────────-──┘    │
-└──────────────────────────────────────────────┼─────-──────────-─┘
-                                                │
-                                    ┌───────────▼──────────┐
-                                    │  SOC Analyst          │
-                                    │  Browser · port 8000  │
-                                    │  Search · Dashboards  │
-                                    │  Alert investigation  │
-                                    └──────────────────────┘
-```
+<img width="669" height="657" alt="Architectural diagram" src="https://github.com/user-attachments/assets/9be86fd5-6b50-4f16-a8fd-326c19e48b1d" />
+<br>
 
 **Data flow summary:**
 1. Windows Server VM generates Event Log entries (4624, 4625, 4740) from normal AD operations and simulated attack traffic
